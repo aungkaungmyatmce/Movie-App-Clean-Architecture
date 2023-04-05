@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:movie_app_clean_architecture/domain/entities/movie_detail_entity.dart';
 
 class MovieEntity extends Equatable {
   final int id;
@@ -25,4 +26,17 @@ class MovieEntity extends Equatable {
 
   @override
   bool get stringify => true;
+
+  factory MovieEntity.fromMovieDetailEntity(
+      MovieDetailEntity movieDetailEntity) {
+    return MovieEntity(
+      id: movieDetailEntity.id,
+      posterPath: movieDetailEntity.posterPath,
+      backdropPath: movieDetailEntity.backdropPath,
+      title: movieDetailEntity.title,
+      voteAverage: movieDetailEntity.voteAverage,
+      releaseDate: movieDetailEntity.releaseDate,
+      overview: movieDetailEntity.overview,
+    );
+  }
 }

@@ -45,13 +45,13 @@ class MovieModel extends MovieEntity {
   factory MovieModel.fromJson(dynamic json) {
     return MovieModel(
       adult: json['adult'],
-      backdropPath: json['backdrop_path'],
+      backdropPath: json['backdrop_path'] ?? '',
       id: json['id'] ?? '',
       title: json['title'] ?? '',
       originalLanguage: json['original_language'],
       originalTitle: json['original_title'],
       overview: json['overview'],
-      posterPath: json['poster_path'],
+      posterPath: json['poster_path'] ?? '',
       mediaType: json['media_type'],
       genreIds: json['genre_ids'] != null ? json['genre_ids'].cast<int>() : [],
       popularity: json['popularity']?.toDouble() ?? 0.0,

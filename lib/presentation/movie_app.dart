@@ -50,11 +50,24 @@ class _MovieAppState extends State<MovieApp> {
                   unselectedWidgetColor: AppColor.royalBlue,
                   primaryColor: AppColor.vulcan,
                   scaffoldBackgroundColor: AppColor.vulcan,
+                  brightness: Brightness.light,
+                  cardTheme: CardTheme(
+                    color: AppColor.vulcan,
+                  ),
                   visualDensity: VisualDensity.adaptivePlatformDensity,
                   textTheme: ThemeText.getTextTheme(),
-                  appBarTheme: AppBarTheme(elevation: 0),
-                  colorScheme: ColorScheme.fromSwatch()
-                      .copyWith(secondary: AppColor.royalBlue),
+                  appBarTheme: const AppBarTheme(
+                      elevation: 0, backgroundColor: AppColor.vulcan),
+                  inputDecorationTheme: InputDecorationTheme(
+                    hintStyle: Theme.of(context).textTheme.greySubtitle1,
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: AppColor.vulcan,
+                      ),
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey)),
+                  ),
                 ),
                 supportedLocales:
                     Languages.languages.map((e) => Locale(e.code)).toList(),

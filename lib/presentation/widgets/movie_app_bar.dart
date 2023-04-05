@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_app_clean_architecture/common/constants/size_constants.dart';
 import 'package:movie_app_clean_architecture/common/extensions/size_extensions.dart';
 import 'package:movie_app_clean_architecture/common/screenutil/screenutil.dart';
+import 'package:movie_app_clean_architecture/presentation/blocs/search_movie/search_movie_bloc.dart';
+import 'package:movie_app_clean_architecture/presentation/journeys/search_movie/custom_search_movie_delegate.dart';
 
 import 'logo.dart';
 
@@ -29,7 +32,12 @@ class MovieAppBar extends StatelessWidget {
             height: Sizes.dimen_14,
           )),
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                showSearch(
+                    context: context,
+                    delegate: CustomSearchDelegate(
+                        BlocProvider.of<SearchMovieBloc>(context)));
+              },
               icon: Icon(
                 Icons.search,
                 color: Colors.white,
