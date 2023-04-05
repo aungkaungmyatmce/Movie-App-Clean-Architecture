@@ -46,6 +46,9 @@ class FavouriteBloc extends Bloc<FavouriteEvent, FavouriteState> {
       final response = await checkIfMovieFavourite(MovieParams(event.movieId));
       yield response.fold(
           (l) => FavouriteMoviesError(), (r) => IsFavouriteMovie(r));
+    } else if (event is DeleteFavouriteMovieEvent) {
+      await deleteFavouriteMovie(MovieParams(event.movieId));
+      yield* _fetchLoadFavouriteMovies();
     }
   }
 

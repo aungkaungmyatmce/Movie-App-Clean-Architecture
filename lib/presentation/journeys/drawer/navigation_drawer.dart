@@ -14,6 +14,7 @@ import 'package:movie_app_clean_architecture/presentation/widgets/logo.dart';
 import 'package:wiredash/wiredash.dart';
 
 import '../../widgets/app_dialog.dart';
+import '../favourite/favourite_screen.dart';
 
 class NavDrawer extends StatelessWidget {
   const NavDrawer({Key? key}) : super(key: key);
@@ -48,7 +49,11 @@ class NavDrawer extends StatelessWidget {
             ),
             NavigationListItem(
                 title: TranslationConstants.favoriteMovies.t(context),
-                onPressed: () {}),
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => FavouriteScreen(),
+                  ));
+                }),
             NavigationExpandedListItem(
               title: TranslationConstants.language.t(context),
               children: Languages.languages.map((e) => e.value).toList(),

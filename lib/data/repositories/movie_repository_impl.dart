@@ -9,7 +9,7 @@ import 'package:movie_app_clean_architecture/domain/entities/movie_detail_entity
 import 'package:movie_app_clean_architecture/domain/entities/movie_entity.dart';
 import 'package:movie_app_clean_architecture/domain/entities/video_entity.dart';
 import 'package:movie_app_clean_architecture/domain/repositories/movie_repository.dart';
-import '../data_sources/movie_local_datasource.dart';
+import '../data_sources/movie_local_data_source.dart';
 import '../models/movie_detail_model.dart';
 import '../models/video_model.dart';
 import '../tables/movie_table.dart';
