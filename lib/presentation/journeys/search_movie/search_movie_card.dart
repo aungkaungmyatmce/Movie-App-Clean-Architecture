@@ -6,6 +6,7 @@ import 'package:movie_app_clean_architecture/presentation/journeys/movie_detail/
 import 'package:movie_app_clean_architecture/presentation/journeys/movie_detail/movie_detail_screen.dart';
 import 'package:movie_app_clean_architecture/presentation/themes/theme_text.dart';
 
+import '../../../common/constants/route_constants.dart';
 import '../../../common/constants/size_constants.dart';
 import '../../../data/core/api_constants.dart';
 
@@ -17,10 +18,8 @@ class SearchMovieCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => MovieDetailScreen(
-              movieDetailArguments: MovieDetailArguments(movie.id)),
-        ));
+        Navigator.of(context).pushNamed(RouteList.movieDetail,
+            arguments: MovieDetailArguments(movie.id));
       },
       child: Padding(
         padding: EdgeInsets.symmetric(

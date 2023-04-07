@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app_clean_architecture/common/constants/languages.dart';
+import 'package:movie_app_clean_architecture/common/constants/route_constants.dart';
 import 'package:movie_app_clean_architecture/common/constants/size_constants.dart';
 import 'package:movie_app_clean_architecture/common/constants/translation_constants.dart';
 import 'package:movie_app_clean_architecture/common/extensions/size_extensions.dart';
 import 'package:movie_app_clean_architecture/common/extensions/string_extensions.dart';
 import 'package:movie_app_clean_architecture/presentation/app_localizations.dart';
 import 'package:movie_app_clean_architecture/presentation/blocs/language_bloc/language_bloc.dart';
+import 'package:movie_app_clean_architecture/presentation/blocs/login/login_bloc.dart';
 import 'package:movie_app_clean_architecture/presentation/journeys/drawer/navigation_expanded_list_tile.dart';
 import 'package:movie_app_clean_architecture/presentation/journeys/drawer/navigation_list_item.dart';
 import 'package:movie_app_clean_architecture/presentation/themes/app_color.dart';
@@ -50,9 +52,7 @@ class NavDrawer extends StatelessWidget {
             NavigationListItem(
                 title: TranslationConstants.favoriteMovies.t(context),
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => FavouriteScreen(),
-                  ));
+                  Navigator.of(context).pushNamed(RouteList.favorite);
                 }),
             NavigationExpandedListItem(
               title: TranslationConstants.language.t(context),
@@ -74,6 +74,17 @@ class NavDrawer extends StatelessWidget {
                   Navigator.of(context).pop();
                   _showDialog(context);
                 }),
+            BlocListener<LoginBloc, LoginState>(
+              listener: (context, state) {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    RouteList.initial, (route) => false);
+              },
+              child: NavigationListItem(
+                  title: TranslationConstants.logout.t(context),
+                  onPressed: () {
+                    BlocProvider.of<LoginBloc>(context).add(LogoutEvent());
+                  }),
+            ),
           ],
         ),
       ),

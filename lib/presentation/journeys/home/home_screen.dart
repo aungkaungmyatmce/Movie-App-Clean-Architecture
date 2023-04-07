@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app_clean_architecture/di/get_it.dart';
-import 'package:movie_app_clean_architecture/presentation/blocs/movie_backdrop/movie_backdrop_bloc.dart';
+import 'package:movie_app_clean_architecture/presentation/blocs/movie_backdrop/movie_backdrop_cubit.dart';
 import 'package:movie_app_clean_architecture/presentation/blocs/movie_carousel/movie_carousel_bloc.dart';
 import 'package:movie_app_clean_architecture/presentation/blocs/movie_tabbed/movie_tabbed_bloc.dart';
 import 'package:movie_app_clean_architecture/presentation/blocs/search_movie/search_movie_bloc.dart';
@@ -19,14 +19,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late MovieCarouselBloc movieCarouselBloc;
-  late MovieBackdropBloc movieBackdropBloc;
+  late MovieBackdropCubit movieBackdropBloc;
   late MovieTabbedBloc movieTabbedBloc;
   late SearchMovieBloc searchMovieBloc;
 
   @override
   void initState() {
     movieCarouselBloc = getItInstance<MovieCarouselBloc>();
-    movieBackdropBloc = getItInstance<MovieBackdropBloc>();
+    movieBackdropBloc = getItInstance<MovieBackdropCubit>();
     movieTabbedBloc = getItInstance<MovieTabbedBloc>();
     searchMovieBloc = getItInstance<SearchMovieBloc>();
     movieCarouselBloc.add(CarouselLoadEvent());

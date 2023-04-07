@@ -1,10 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app_clean_architecture/common/constants/route_constants.dart';
 import 'package:movie_app_clean_architecture/presentation/blocs/favourite/favourite_bloc.dart';
 import 'package:movie_app_clean_architecture/presentation/journeys/movie_detail/movie_detail_argument.dart';
-import 'package:movie_app_clean_architecture/presentation/journeys/movie_detail/movie_detail_screen.dart';
-
 import '../../../common/constants/size_constants.dart';
 import '../../../common/extensions/size_extensions.dart';
 import '../../../data/core/api_constants.dart';
@@ -27,12 +26,8 @@ class FavoriteMovieCardWidget extends StatelessWidget {
       ),
       child: GestureDetector(
         onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MovieDetailScreen(
-                    movieDetailArguments: MovieDetailArguments(movie.id)),
-              ));
+          Navigator.of(context).pushNamed(RouteList.movieDetail,
+              arguments: MovieDetailArguments(movie.id));
         },
         child: ClipRRect(
           borderRadius: BorderRadius.circular(Sizes.dimen_8.w),

@@ -2,11 +2,17 @@ import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:movie_app_clean_architecture/common/constants/languages.dart';
 import 'package:movie_app_clean_architecture/data/core/api_client.dart';
+import 'package:movie_app_clean_architecture/data/data_sources/authentication_local_data_source.dart';
+import 'package:movie_app_clean_architecture/data/data_sources/authentication_remote_data_source.dart';
 import 'package:movie_app_clean_architecture/data/data_sources/language_local_data_source.dart';
 import 'package:movie_app_clean_architecture/data/data_sources/movie_remote_data_source.dart';
 import 'package:movie_app_clean_architecture/data/repositories/app_repository_impl.dart';
+import 'package:movie_app_clean_architecture/data/repositories/authentication_repository_impl.dart';
 import 'package:movie_app_clean_architecture/data/repositories/movie_repository_impl.dart';
+import 'package:movie_app_clean_architecture/domain/repositories/authentication_repository.dart';
 import 'package:movie_app_clean_architecture/domain/repositories/movie_repository.dart';
+import 'package:movie_app_clean_architecture/domain/usecases/authentication/login_user.dart';
+import 'package:movie_app_clean_architecture/domain/usecases/authentication/logout_user.dart';
 import 'package:movie_app_clean_architecture/domain/usecases/check_if_movie_favourite.dart';
 import 'package:movie_app_clean_architecture/domain/usecases/delete_favourite_movie.dart';
 import 'package:movie_app_clean_architecture/domain/usecases/get_cast.dart';
@@ -23,7 +29,9 @@ import 'package:movie_app_clean_architecture/domain/usecases/save_movie.dart';
 import 'package:movie_app_clean_architecture/domain/usecases/search_movies.dart';
 import 'package:movie_app_clean_architecture/presentation/blocs/cast/cast_bloc.dart';
 import 'package:movie_app_clean_architecture/presentation/blocs/language_bloc/language_bloc.dart';
-import 'package:movie_app_clean_architecture/presentation/blocs/movie_backdrop/movie_backdrop_bloc.dart';
+import 'package:movie_app_clean_architecture/presentation/blocs/loading/loading_cubit.dart';
+import 'package:movie_app_clean_architecture/presentation/blocs/login/login_bloc.dart';
+import 'package:movie_app_clean_architecture/presentation/blocs/movie_backdrop/movie_backdrop_cubit.dart';
 import 'package:movie_app_clean_architecture/presentation/blocs/movie_carousel/movie_carousel_bloc.dart';
 import 'package:movie_app_clean_architecture/presentation/blocs/movie_detail/movie_detail_bloc.dart';
 import 'package:movie_app_clean_architecture/presentation/blocs/movie_tabbed/movie_tabbed_bloc.dart';
@@ -48,6 +56,10 @@ Future init() async {
       () => MovieLocalDataSourceImpl());
   getItInstance.registerLazySingleton<LanguageLocalDataSource>(
       () => LanguageLocalDataSourceImpl());
+  getItInstance.registerLazySingleton<AuthenticationRemoteDataSource>(
+      () => AuthenticationRemoteDataSourceImpl(getItInstance()));
+  getItInstance.registerLazySingleton<AuthenticationLocalDataSource>(
+      () => AuthenticationLocalDataSourceImpl());
 
   /// Use Cases
   getItInstance
@@ -90,17 +102,28 @@ Future init() async {
   getItInstance.registerLazySingleton<GetPreferredLanguage>(
       () => GetPreferredLanguage(getItInstance()));
 
+  getItInstance
+      .registerLazySingleton<LoginUser>(() => LoginUser(getItInstance()));
+
+  getItInstance
+      .registerLazySingleton<LogoutUser>(() => LogoutUser(getItInstance()));
+
   ///Repository
   getItInstance.registerLazySingleton<MovieRepository>(
       () => MovieRepositoryImpl(getItInstance(), getItInstance()));
   getItInstance.registerLazySingleton<AppRepository>(
       () => AppRepositoryImpl(getItInstance()));
+  getItInstance.registerLazySingleton<AuthenticationRepository>(
+      () => AuthenticationRepositoryImpl(getItInstance(), getItInstance()));
 
   ///Bloc
-  getItInstance
-      .registerFactory(() => MovieCarouselBloc(getTrending: getItInstance()));
+  getItInstance.registerFactory(() => MovieCarouselBloc(
+        getTrending: getItInstance(),
+        movieBackdropCubit: getItInstance(),
+        loadingCubit: getItInstance(),
+      ));
 
-  getItInstance.registerFactory(() => MovieBackdropBloc());
+  getItInstance.registerFactory(() => MovieBackdropCubit());
 
   getItInstance.registerFactory(() => MovieTabbedBloc(
         getPopular: getItInstance(),
@@ -113,10 +136,12 @@ Future init() async {
         castBloc: getItInstance(),
         videosBloc: getItInstance(),
         favouriteBloc: getItInstance(),
+        loadingCubit: getItInstance(),
       ));
 
   getItInstance.registerFactory(() => SearchMovieBloc(
         getSearchMovies: getItInstance(),
+        loadingCubit: getItInstance(),
       ));
 
   getItInstance.registerFactory(() => FavouriteBloc(
@@ -124,6 +149,12 @@ Future init() async {
         checkIfMovieFavourite: getItInstance(),
         getFavouriteMovies: getItInstance(),
         deleteFavouriteMovie: getItInstance(),
+      ));
+
+  getItInstance.registerFactory(() => LoginBloc(
+        loginUser: getItInstance(),
+        logoutUser: getItInstance(),
+        loadingCubit: getItInstance(),
       ));
 
   getItInstance.registerFactory(() => CastBloc(getCast: getItInstance()));
@@ -134,4 +165,6 @@ Future init() async {
     getPreferredLanguage: getItInstance(),
     updateLanguage: getItInstance(),
   ));
+
+  getItInstance.registerLazySingleton<LoadingCubit>(() => LoadingCubit());
 }

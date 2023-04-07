@@ -32,3 +32,12 @@ class MovieTabLoadError extends MovieTabbedState {
   @override
   List<Object?> get props => [currentTabIndex];
 }
+
+class MovieTabLoading extends MovieTabbedState {
+  MovieTabLoading({required int currentIndex})
+      : super(currentTabIndex: currentIndex);
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
+}

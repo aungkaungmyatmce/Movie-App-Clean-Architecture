@@ -7,6 +7,8 @@ import 'package:movie_app_clean_architecture/presentation/blocs/videos/videos_bl
 import 'package:movie_app_clean_architecture/presentation/journeys/watch_video/watch_video_arguments.dart';
 import 'package:movie_app_clean_architecture/presentation/journeys/watch_video/watch_video_screen.dart';
 
+import '../../../common/constants/route_constants.dart';
+
 class VideosWidget extends StatelessWidget {
   final VideosBloc videosBloc;
 
@@ -21,6 +23,8 @@ class VideosWidget extends StatelessWidget {
           final videos = state.videos;
           return TextButton(
               onPressed: () {
+                Navigator.of(context).pushNamed(RouteList.watchTrailer);
+
                 Navigator.push(
                     context,
                     MaterialPageRoute(

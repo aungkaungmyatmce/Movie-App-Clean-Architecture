@@ -6,6 +6,8 @@ import 'package:movie_app_clean_architecture/data/core/api_constants.dart';
 import 'package:movie_app_clean_architecture/presentation/journeys/movie_detail/movie_detail_argument.dart';
 import 'package:movie_app_clean_architecture/presentation/journeys/movie_detail/movie_detail_screen.dart';
 
+import '../../../../common/constants/route_constants.dart';
+
 class MovieCardWidget extends StatelessWidget {
   final int movieId;
   final String posterPath;
@@ -22,10 +24,8 @@ class MovieCardWidget extends StatelessWidget {
       borderRadius: BorderRadius.circular(Sizes.dimen_16.w),
       child: GestureDetector(
         onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => MovieDetailScreen(
-                movieDetailArguments: MovieDetailArguments(movieId)),
-          ));
+          Navigator.of(context).pushNamed(RouteList.movieDetail,
+              arguments: MovieDetailArguments(movieId));
         },
         child: ClipRRect(
           borderRadius: BorderRadius.circular(Sizes.dimen_16.w),

@@ -7,7 +7,8 @@ import 'package:movie_app_clean_architecture/common/constants/size_constants.dar
 import 'package:movie_app_clean_architecture/common/extensions/size_extensions.dart';
 import 'package:movie_app_clean_architecture/common/screenutil/screenutil.dart';
 import 'package:movie_app_clean_architecture/data/core/api_constants.dart';
-import 'package:movie_app_clean_architecture/presentation/blocs/movie_backdrop/movie_backdrop_bloc.dart';
+import 'package:movie_app_clean_architecture/domain/entities/movie_entity.dart';
+import 'package:movie_app_clean_architecture/presentation/blocs/movie_backdrop/movie_backdrop_cubit.dart';
 
 class MovieBackdropWidget extends StatelessWidget {
   const MovieBackdropWidget({Key? key}) : super(key: key);
@@ -25,16 +26,13 @@ class MovieBackdropWidget extends StatelessWidget {
             child: FractionallySizedBox(
               heightFactor: 1,
               widthFactor: 1,
-              child: BlocBuilder<MovieBackdropBloc, MovieBackdropState>(
-                builder: (context, state) {
-                  if (state is MovieBackdropChanged) {
-                    return CachedNetworkImage(
-                      imageUrl:
-                          '${ApiConstants.BASE_IMAGE_URL}${state.movie.posterPath}',
-                      fit: BoxFit.fitWidth,
-                    );
-                  }
-                  return const SizedBox.shrink();
+              child: BlocBuilder<MovieBackdropCubit, MovieEntity?>(
+                builder: (context, movie) {
+                  return CachedNetworkImage(
+                    imageUrl:
+                        '${ApiConstants.BASE_IMAGE_URL}${movie?.posterPath}',
+                    fit: BoxFit.fitWidth,
+                  );
                 },
               ),
             ),
