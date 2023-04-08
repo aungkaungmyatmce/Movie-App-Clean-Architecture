@@ -9,27 +9,23 @@ import 'package:movie_app_clean_architecture/domain/entities/no_params.dart';
 import '../../../domain/usecases/language_usecases/get_preferred_language.dart';
 import '../../../domain/usecases/language_usecases/update_language.dart';
 
-part 'language_event.dart';
-part 'language_state.dart';
-
-class LanguageBloc extends Bloc<LanguageEvent, LanguageState> {
+class LanguageCubit extends Cubit<Locale> {
   final GetPreferredLanguage getPreferredLanguage;
   final UpdateLanguage updateLanguage;
-  LanguageBloc(
+  LanguageCubit(
       {required this.getPreferredLanguage, required this.updateLanguage})
-      : super(LanguageLoaded(Locale(Languages.languages[0].code)));
+      : super(Locale(Languages.languages[0].code));
 
-  @override
-  Stream<LanguageState> mapEventToState(
-    LanguageEvent event,
-  ) async* {
-    if (event is ToggleLanguageEvent) {
-      await updateLanguage(event.language.code);
-      add(LoadPreferredLanguageEvent());
-    } else if (event is LoadPreferredLanguageEvent) {
-      final response = await getPreferredLanguage(NoParams());
-      yield response.fold(
-          (l) => LanguageError(), (r) => LanguageLoaded(Locale(r)));
-    }
+  Future<void> toggleLanguage(LanguageEntity language) async {
+    await updateLanguage(language.code);
+    loadPreferredLanguage();
+  }
+
+  void loadPreferredLanguage() async {
+    final response = await getPreferredLanguage(NoParams());
+    emit(response.fold(
+      (l) => Locale(Languages.languages[0].code),
+      (r) => Locale(r),
+    ));
   }
 }

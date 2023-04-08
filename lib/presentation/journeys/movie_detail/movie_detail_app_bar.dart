@@ -5,7 +5,7 @@ import 'package:movie_app_clean_architecture/domain/entities/movie_entity.dart';
 
 import '../../../common/constants/size_constants.dart';
 import '../../../domain/entities/movie_detail_entity.dart';
-import '../../blocs/favourite/favourite_bloc.dart';
+import '../../blocs/favourite/favourite_cubit.dart';
 
 class MovieDetailAppBar extends StatelessWidget {
   final MovieDetailEntity movieDetailEntity;
@@ -30,15 +30,15 @@ class MovieDetailAppBar extends StatelessWidget {
             size: Sizes.dimen_12.h,
           ),
         ),
-        BlocBuilder<FavouriteBloc, FavouriteState>(
+        BlocBuilder<FavouriteCubit, FavouriteState>(
           builder: (context, state) {
             if (state is IsFavouriteMovie) {
               return GestureDetector(
                 onTap: () {
-                  BlocProvider.of<FavouriteBloc>(context).add(
-                      ToggleFavouriteMovieEvent(
+                  BlocProvider.of<FavouriteCubit>(context).toggleFavouriteMovie(
+                      movie:
                           MovieEntity.fromMovieDetailEntity(movieDetailEntity),
-                          state.isMovieFavourite));
+                      isFavourite: state.isMovieFavourite);
                 },
                 child: Icon(
                   state.isMovieFavourite

@@ -1,4 +1,4 @@
-part of 'movie_carousel_bloc.dart';
+part of 'movie_carousel_cubit.dart';
 
 @immutable
 abstract class MovieCarouselState extends Equatable {}

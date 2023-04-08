@@ -10,13 +10,13 @@ import 'package:movie_app_clean_architecture/presentation/journeys/watch_video/w
 import '../../../common/constants/route_constants.dart';
 
 class VideosWidget extends StatelessWidget {
-  final VideosBloc videosBloc;
+  final VideosCubit videosBloc;
 
   const VideosWidget({Key? key, required this.videosBloc}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<VideosBloc, VideosState>(
+    return BlocBuilder<VideosCubit, VideosState>(
       bloc: videosBloc,
       builder: (context, state) {
         if (state is VideosLoaded && state.videos.iterator.moveNext()) {

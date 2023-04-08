@@ -9,20 +9,15 @@ import 'package:movie_app_clean_architecture/domain/entities/movie_params.dart';
 import '../../../domain/entities/cast_entity.dart';
 import '../../../domain/usecases/get_cast.dart';
 
-part 'cast_event.dart';
 part 'cast_state.dart';
 
-class CastBloc extends Bloc<CastEvent, CastState> {
+class CastCubit extends Cubit<CastState> {
   final GetCast getCast;
-  CastBloc({required this.getCast}) : super(CastInitial());
+  CastCubit({required this.getCast}) : super(CastInitial());
 
-  @override
-  Stream<CastState> mapEventToState(CastEvent event) async* {
-    if (event is LoadCastEvent) {
-      Either<AppError, List<CastEntity>> eitherResponse =
-          await getCast(MovieParams(event.movieId));
-      yield eitherResponse.fold(
-          (l) => CastError(), (r) => CastLoaded(casts: r));
-    }
+  void loadCast(int movieId) async {
+    Either<AppError, List<CastEntity>> eitherResponse =
+        await getCast(MovieParams(movieId));
+    emit(eitherResponse.fold((l) => CastError(), (r) => CastLoaded(casts: r)));
   }
 }

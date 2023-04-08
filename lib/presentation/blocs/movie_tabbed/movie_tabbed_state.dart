@@ -1,4 +1,4 @@
-part of 'movie_tabbed_bloc.dart';
+part of 'movie_tabbed_cubit.dart';
 
 abstract class MovieTabbedState extends Equatable {
   final int currentTabIndex;
@@ -39,5 +39,5 @@ class MovieTabLoading extends MovieTabbedState {
 
   @override
   // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [];
 }

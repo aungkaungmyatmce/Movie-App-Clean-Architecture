@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app_clean_architecture/common/constants/translation_constants.dart';
 import 'package:movie_app_clean_architecture/common/extensions/string_extensions.dart';
 import 'package:movie_app_clean_architecture/di/get_it.dart';
-import 'package:movie_app_clean_architecture/presentation/blocs/favourite/favourite_bloc.dart';
+import 'package:movie_app_clean_architecture/presentation/blocs/favourite/favourite_cubit.dart';
 
 import 'favorite_movie_grid_view.dart';
 
@@ -15,13 +15,13 @@ class FavouriteScreen extends StatefulWidget {
 }
 
 class _FavouriteScreenState extends State<FavouriteScreen> {
-  late FavouriteBloc _favouriteBloc;
+  late FavouriteCubit _favouriteBloc;
 
   @override
   void initState() {
     super.initState();
-    _favouriteBloc = getItInstance<FavouriteBloc>();
-    _favouriteBloc.add(LoadFavouriteMovieEvent());
+    _favouriteBloc = getItInstance<FavouriteCubit>();
+    _favouriteBloc.loadFavouriteMovies();
   }
 
   @override
@@ -38,9 +38,8 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
       ),
       body: BlocProvider.value(
           value: _favouriteBloc,
-          child: BlocBuilder<FavouriteBloc, FavouriteState>(
+          child: BlocBuilder<FavouriteCubit, FavouriteState>(
             builder: (context, state) {
-              print(state);
               if (state is FavouriteMoviesLoaded) {
                 if (state.movies.isEmpty) {
                   return Center(

@@ -6,17 +6,14 @@ import 'package:movie_app_clean_architecture/common/constants/size_constants.dar
 import 'package:movie_app_clean_architecture/common/constants/translation_constants.dart';
 import 'package:movie_app_clean_architecture/common/extensions/size_extensions.dart';
 import 'package:movie_app_clean_architecture/common/extensions/string_extensions.dart';
-import 'package:movie_app_clean_architecture/presentation/app_localizations.dart';
-import 'package:movie_app_clean_architecture/presentation/blocs/language_bloc/language_bloc.dart';
+import 'package:movie_app_clean_architecture/presentation/blocs/language_bloc/language_cubit.dart';
 import 'package:movie_app_clean_architecture/presentation/blocs/login/login_bloc.dart';
 import 'package:movie_app_clean_architecture/presentation/journeys/drawer/navigation_expanded_list_tile.dart';
 import 'package:movie_app_clean_architecture/presentation/journeys/drawer/navigation_list_item.dart';
-import 'package:movie_app_clean_architecture/presentation/themes/app_color.dart';
 import 'package:movie_app_clean_architecture/presentation/widgets/logo.dart';
 import 'package:wiredash/wiredash.dart';
 
 import '../../widgets/app_dialog.dart';
-import '../favourite/favourite_screen.dart';
 
 class NavDrawer extends StatelessWidget {
   const NavDrawer({Key? key}) : super(key: key);
@@ -58,8 +55,8 @@ class NavDrawer extends StatelessWidget {
               title: TranslationConstants.language.t(context),
               children: Languages.languages.map((e) => e.value).toList(),
               onPressed: (index) {
-                BlocProvider.of<LanguageBloc>(context)
-                    .add(ToggleLanguageEvent(Languages.languages[index]));
+                BlocProvider.of<LanguageCubit>(context)
+                    .toggleLanguage(Languages.languages[index]);
               },
             ),
             NavigationListItem(
@@ -74,7 +71,7 @@ class NavDrawer extends StatelessWidget {
                   Navigator.of(context).pop();
                   _showDialog(context);
                 }),
-            BlocListener<LoginBloc, LoginState>(
+            BlocListener<LoginCubit, LoginState>(
               listener: (context, state) {
                 Navigator.of(context).pushNamedAndRemoveUntil(
                     RouteList.initial, (route) => false);
@@ -82,7 +79,7 @@ class NavDrawer extends StatelessWidget {
               child: NavigationListItem(
                   title: TranslationConstants.logout.t(context),
                   onPressed: () {
-                    BlocProvider.of<LoginBloc>(context).add(LogoutEvent());
+                    BlocProvider.of<LoginCubit>(context).doLogout();
                   }),
             ),
           ],

@@ -62,7 +62,7 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
         authenticationLocalDataSource.deleteSessionId(),
       ]);
     }
-    print(await authenticationLocalDataSource.getSessionId());
+
     return Right(Unit);
   }
 }

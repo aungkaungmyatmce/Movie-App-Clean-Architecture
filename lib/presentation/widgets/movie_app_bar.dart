@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_app_clean_architecture/common/constants/size_constants.dart';
 import 'package:movie_app_clean_architecture/common/extensions/size_extensions.dart';
 import 'package:movie_app_clean_architecture/common/screenutil/screenutil.dart';
-import 'package:movie_app_clean_architecture/presentation/blocs/search_movie/search_movie_bloc.dart';
+import 'package:movie_app_clean_architecture/presentation/blocs/search_movie/search_movie_cubit.dart';
 import 'package:movie_app_clean_architecture/presentation/journeys/search_movie/custom_search_movie_delegate.dart';
 
 import 'logo.dart';
@@ -36,7 +36,7 @@ class MovieAppBar extends StatelessWidget {
                 showSearch(
                     context: context,
                     delegate: CustomSearchDelegate(
-                        BlocProvider.of<SearchMovieBloc>(context)));
+                        BlocProvider.of<SearchMovieCubit>(context)));
               },
               icon: Icon(
                 Icons.search,

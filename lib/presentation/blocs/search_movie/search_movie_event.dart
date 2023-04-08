@@ -1,4 +1,4 @@
-part of 'search_movie_bloc.dart';
+part of 'search_movie_cubit.dart';
 
 abstract class SearchMovieEvent extends Equatable {
   const SearchMovieEvent();

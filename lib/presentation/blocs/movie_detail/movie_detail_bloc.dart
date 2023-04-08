@@ -8,42 +8,38 @@ import 'package:movie_app_clean_architecture/domain/entities/movie_params.dart';
 
 import '../../../domain/usecases/get_movie_detail.dart';
 import '../cast/cast_bloc.dart';
-import '../favourite/favourite_bloc.dart';
+import '../favourite/favourite_cubit.dart';
 import '../loading/loading_cubit.dart';
 import '../videos/videos_bloc.dart';
-part 'movie_detail_event.dart';
 part 'movie_detail_state.dart';
 
-class MovieDetailBloc extends Bloc<MovieDetailEvent, MovieDetailState> {
+class MovieDetailCubit extends Cubit<MovieDetailState> {
   final GetMovieDetail getMovieDetail;
-  final CastBloc castBloc;
-  final VideosBloc videosBloc;
-  final FavouriteBloc favouriteBloc;
+  final CastCubit castCubit;
+  final VideosCubit videosCubit;
+  final FavouriteCubit favouriteCubit;
   final LoadingCubit loadingCubit;
 
-  MovieDetailBloc({
+  MovieDetailCubit({
     required this.getMovieDetail,
-    required this.castBloc,
-    required this.videosBloc,
-    required this.favouriteBloc,
+    required this.castCubit,
+    required this.videosCubit,
+    required this.favouriteCubit,
     required this.loadingCubit,
   }) : super(MovieDetailInitial());
 
-  @override
-  Stream<MovieDetailState> mapEventToState(MovieDetailEvent event) async* {
-    if (event is MovieDetailLoadEvent) {
-      loadingCubit.show();
-      final Either<AppError, MovieDetailEntity> eitherResponse =
-          await getMovieDetail(MovieParams(event.movieId));
-      yield eitherResponse.fold(
-        (l) => MovieDetailError(),
-        (r) => MovieDetailLoaded(r),
-      );
+  void loadMovieDetail(int movieId) async {
+    loadingCubit.show();
+    final Either<AppError, MovieDetailEntity> eitherResponse =
+        await getMovieDetail(MovieParams(movieId));
+    emit(eitherResponse.fold(
+      (l) => MovieDetailError(),
+      (r) => MovieDetailLoaded(r),
+    ));
 
-      favouriteBloc.add(CheckIfFavouriteMovieEvent(event.movieId));
-      castBloc.add(LoadCastEvent(movieId: event.movieId));
-      videosBloc.add(LoadVideosEvent(movieId: event.movieId));
-      loadingCubit.hide();
-    }
+    favouriteCubit.checkIfFavouriteMovie(movieId);
+    castCubit.loadCast(movieId);
+    videosCubit.loadVideos(movieId);
+    loadingCubit.hide();
   }
 }

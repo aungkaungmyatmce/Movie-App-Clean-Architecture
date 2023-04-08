@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_app_clean_architecture/common/extensions/size_extensions.dart';
 import 'package:movie_app_clean_architecture/common/extensions/string_extensions.dart';
 import 'package:movie_app_clean_architecture/domain/entities/app_error.dart';
-import 'package:movie_app_clean_architecture/presentation/blocs/movie_carousel/movie_carousel_bloc.dart';
+import 'package:movie_app_clean_architecture/presentation/blocs/movie_carousel/movie_carousel_cubit.dart';
 import 'package:wiredash/wiredash.dart';
 
 import '../../common/constants/size_constants.dart';

@@ -12,17 +12,24 @@ import '../../../domain/usecases/get_videos.dart';
 part 'videos_event.dart';
 part 'videos_state.dart';
 
-class VideosBloc extends Bloc<VideosEvent, VideosState> {
+class VideosCubit extends Cubit<VideosState> {
   final GetVideos getVideos;
-  VideosBloc({required this.getVideos}) : super(VideosInitial());
+  VideosCubit({required this.getVideos}) : super(VideosInitial());
 
-  @override
-  Stream<VideosState> mapEventToState(VideosEvent event) async* {
-    if (event is LoadVideosEvent) {
-      final Either<AppError, List<VideoEntity>> eitherResponse =
-          await getVideos(MovieParams(event.movieId));
-      yield eitherResponse.fold(
-          (l) => NoVideos(), (r) => VideosLoaded(videos: r));
-    }
+  void loadVideos(int movieId) async {
+    final Either<AppError, List<VideoEntity>> eitherResponse =
+        await getVideos(MovieParams(movieId));
+    emit(
+        eitherResponse.fold((l) => NoVideos(), (r) => VideosLoaded(videos: r)));
   }
+
+  // @override
+  // Stream<VideosState> mapEventToState(VideosEvent event) async* {
+  //   if (event is LoadVideosEvent) {
+  //     final Either<AppError, List<VideoEntity>> eitherResponse =
+  //         await getVideos(MovieParams(event.movieId));
+  //     yield eitherResponse.fold(
+  //         (l) => NoVideos(), (r) => VideosLoaded(videos: r));
+  //   }
+  // }
 }

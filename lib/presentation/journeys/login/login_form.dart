@@ -82,7 +82,7 @@ class _LoginFormState extends State<LoginForm> {
               textFieldKey: const ValueKey('password_text_field_key'),
             ),
 
-            BlocConsumer<LoginBloc, LoginState>(
+            BlocConsumer<LoginCubit, LoginState>(
               buildWhen: (previous, current) => current is LoginError,
               builder: (context, state) {
                 if (state is LoginError) {
@@ -102,8 +102,9 @@ class _LoginFormState extends State<LoginForm> {
 
             Button(
               onPressed: () {
-                BlocProvider.of<LoginBloc>(context).add(LoginInitialEvent(
-                    _userNameController!.text, _passwordController!.text));
+                BlocProvider.of<LoginCubit>(context).initiateLogin(
+                    username: _userNameController!.text,
+                    password: _passwordController!.text);
               },
               text: TranslationConstants.signIn,
               isEnabled: enableSignIn,
